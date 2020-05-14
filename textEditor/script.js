@@ -27,13 +27,9 @@ function main() {
             looking()
         }); //end EL to make text the same for copy div & text
 
-        text.addEventListener('scroll', (evnt) => {
-            copyHere.scrollTop = evnt.target.scrollTop;
-        });//end EL to make scroll the same for copy div & text
+        text.addEventListener('scroll', (evnt) => { copyHere.scrollTop = evnt.target.scrollTop; });//end EL to make scroll the same for copy div & text
 
-        copyHere.addEventListener('scroll', (evnt) => {
-            text.scrollTop = evnt.target.scrollTop;
-        });//end EL to make scroll the same for copy div & text when searching for a match
+        copyHere.addEventListener('scroll', (evnt) => { text.scrollTop = evnt.target.scrollTop; });//end EL to make scroll the same for copy div & text when searching for a match
 
         caseSen.addEventListener('change', sense);
 
@@ -79,6 +75,16 @@ function looking() {
     }//end if else for finding in text
 } // end function looking to show the user the matches
 
+function buildAwithCopyLetters() {
+    let arr = []
+    let copyData = copyHere.textContent;
+    for (let letter = 0; letter < copyData.length; letter++) {
+        let letters = copyData[letter]
+        arr.push(letters);
+    }//adds all letters to array
+    return arr
+} //builds array with letters from copy data
+
 function makeArr(aNewArr, find) {
     aNewArr = [];
     let data = text.value;
@@ -95,20 +101,6 @@ function makeArr(aNewArr, find) {
 
     return aNewArr
 }//puts the locations in the new array
-
-function nONE(value) {
-    document.getElementById('matched').textContent = value;
-} // end function none to display amount of matches
-
-function buildAwithCopyLetters() {
-    let arr = []
-    let copyData = copyHere.textContent;
-    for (let letter = 0; letter < copyData.length; letter++) {
-        let letters = copyData[letter]
-        arr.push(letters);
-    }//adds all letters to array
-    return arr
-} //builds array with letters from copy data
 
 function underlineMatches(arr, aNewArr, find) {
     let update = 0;
@@ -127,6 +119,10 @@ function underlineMatches(arr, aNewArr, find) {
     }//end for to underline all matches
 } //end function to underine matches
 
+function nONE(value) {
+    document.getElementById('matched').textContent = value;
+} // end function none to display amount of matches
+
 function highlight(origin) {
     let highlighted;
     let lastOne = copyHere.lastElementChild;
@@ -141,32 +137,21 @@ function highlight(origin) {
 
     if (origin === "next") {
 
-        if (highlighted === lastOne) {
-            highlighted = copyHere.firstElementChild;
-        } else {
-            highlighted = highlighted.nextElementSibling
-        }//end if to loop
+         highlighted = (highlighted === lastOne)? copyHere.firstElementChild : highlighted.nextElementSibling;
 
     } else if (origin === "prev") {
 
-        if (highlighted === firstOne) {
-            highlighted = copyHere.lastElementChild;
-        } else {
-            highlighted = highlighted.previousElementSibling
-        }//end if to loop
+        highlighted = (highlighted === firstOne) ? copyHere.lastElementChild : highlighted.previousElementSibling;
 
     } else if (typeof origin === 'number') {
-
-        if (origin >= copyHere.children.length) {
-            highlighted = copyHere.firstElementChild;
-        }  else{
-            highlighted = copyHere.children[origin];
-        }//end if to loop
+        
+        highlighted = (origin >= copyHere.children.length) ? copyHere.firstElementChild : copyHere.children[origin];
+        
     } // end if else if else if to figure out which function is highlighting
 
     highlighted.id = 'highlightMe';
     highlighted.scrollIntoView(false);
-}//end highlight function to highlight the selected text
+}//end highlight function to highlight the text found
 
 function nextMatch(evnt) {
     evnt.preventDefault()
@@ -175,36 +160,21 @@ function nextMatch(evnt) {
 
 function moveToNext(origin) {
     let spans = copyHere.getElementsByTagName('span');
-    if (spans.length !== 0 && origin === 'nfunc') {
-        highlight('next')
-    } else if (spans.length !== 0) {
-        highlight(origin)
-    } else {
-        nONE('None')
-    }
+    (spans.length !== 0 && origin === 'nfunc') ? highlight('next') :
+    (spans.length !== 0) ? highlight(origin) : nONE('None');
 }//end actual next function
 
 function prevMatch(evnt) {
     evnt.preventDefault()
     let spanner = copyHere.getElementsByTagName('span');
-    if (spanner.length !== 0) {
-        highlight('prev')
-    } else {
-        nONE('None')
-    }
+    (spanner.length !== 0) ? highlight('prev') : nONE('None');
 }//end function to highlight prev match
 
 function sense(evnt) {
-    let sign = document.getElementById('enOrDis')
-    sign.textContent = ""
-
-    if (caseSen.checked) {
-        sign.textContent += 'On'
-        act = 1;
-    } else {
-        sign.textContent += 'Off'
-        act = 0;
-    }
+    let sign = document.getElementById('enOrDis')    
+    sign.textContent = (caseSen.checked) ? "On" : "Off";
+    act = (caseSen.checked) ? 1 : 2;
+    
     looking() //for automatic updates
 }//end case sensitivity function
 
