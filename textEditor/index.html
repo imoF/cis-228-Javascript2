@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Edit Text</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Text Editor</h1>
+    <h2>Use the search and replace feature to edit text</h2>
+    <form>
+        <div id = 'outer' >
+            <div id = 'copy'></div>
+            <textarea id = "writing" name = "writing" placeholder = "Enter text..." ></textarea>
+        </div>
+
+        <input
+            id = "searchBox"
+            type = "text"
+            name = "searchBox"
+            placeholder = "Search for"
+        >
+        <button id = "next">Next</button>
+        <button id = "prev">Previous</button>
+
+        <div id = 'amountOfMatches'>  Matches: <span id = 'matched'></span></div>
+        
+        
+        <br>
+        
+        <input  
+            id = "replaceBox"
+            type = "text"
+            name = "replaceBox"
+            placeholder = "Replace with"
+        >
+        
+        <button id = "replaceNext">Replace</button>
+        <button id = "replaceAll">Replace All</button>
+        
+        <input
+            id = "caseSens"
+            type = "checkbox"
+            name = "caseSens"
+        >
+        <label for = "caseSens">Case Sensitivity: <span id = "enOrDis">Off</span></label>
+    </form>
+
+    <script src='script.js'></script>
+</body>
+
+</html>
